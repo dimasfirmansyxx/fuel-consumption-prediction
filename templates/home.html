@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fuel Consumption Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="bg-dark">
+    <div class="container mt-3">
+      <div class="row">
+
+        <div class="col-md-5 col-12 mx-auto">
+          <div class="card">
+            <div class="card-header">
+              <h1 class="card-title h5">Fuel Consumption Prediction</h1>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-danger" id="alert" style="display: none;">
+                
+              </div>
+              <form action="" method="post" id="frmSubmit">
+                <div class="form-group mb-2">
+                  <label>Cylinders <span class="text-danger">*</span></label>
+                  <input type="number" name="cylinders" class="form-control" required value="4">
+                </div>
+                <div class="form-group mb-2">
+                  <label>Displacement (cc) <span class="text-danger">*</span></label>
+                  <input type="number" name="displacement" class="form-control" required value="1462">
+                </div>
+                <div class="form-group mb-2">
+                  <label>Horsepower <span class="text-danger">*</span></label>
+                  <input type="number" name="horsepower" class="form-control" required value="105">
+                </div>
+                <div class="form-group mb-2">
+                  <label>Weight (kg) <span class="text-danger">*</span></label>
+                  <input type="number" name="weight" class="form-control" required value="1130">
+                </div>
+                <div class="form-group mb-2">
+                  <label>Model Year <span class="text-danger">*</span></label>
+                  <input type="number" name="model_year" class="form-control" required value="22">
+                </div>
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary" id="btnCalculate">Calculate!</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const form = document.getElementById('frmSubmit')
+
+      const api = async (data) => {
+        const hit = await fetch('http://127.0.0.1:3298/result', {
+          method: 'POST',
+          body: data,
+          cors: 'cors'
+        })
+        const response = await hit.json()
+        return response
+      }
+
+      const showAlert = (type, msg) => {
+        const el = document.getElementById('alert')
+        el.classList.remove('alert-success')
+        el.classList.remove('alert-danger')
+        el.classList.remove('alert-primary')
+        el.classList.remove('alert-warning')
+        el.classList.remove('alert-secondary')
+        el.classList.add(`alert-${type}`)
+        el.innerHTML = msg
+        el.style.display = ''
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        const btn = document.getElementById('btnCalculate')
+        btn.setAttribute('disabled','disabled')
+        showAlert('primary','Predicting....')
+        api(new FormData(form))
+        .then(res => {
+          btn.removeAttribute('disabled')
+          showAlert('success', `Prediction: ${parseInt(res.prediction).toFixed(1)} km/l`)
+        })
+      })
+    </script>
+  </body>
+</html>
