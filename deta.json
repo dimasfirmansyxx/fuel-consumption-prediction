@@ -1,11 +1,6 @@
 {
 	"name": "fuel_prediction",
 	"description": "Fuel Consumption Prediction",
-	"env": [
-		{
-			"key": "NAME",
-			"description": "Dim",
-			"required": false 
-		}
-	]
+	"env": [],
+	"runtime": "python3.9"
 }
