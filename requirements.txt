@@ -1,2 +1,9 @@
 gunicorn
 flask
+flask-cors
+joblib
+numpy
+tensorflow
+scikit-learn
+scipy
+matplotlib
