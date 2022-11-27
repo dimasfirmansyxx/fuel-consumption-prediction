@@ -49,4 +49,4 @@ def result():
     return jsonify(json_dict)
     
 if __name__=='__main__':
-    app.run(debug=True,port=3298)
+    app.run()
