@@ -1,12 +1,11 @@
 {
-    "name": "Fuel Efficiency Prediction",
-    "description": "",
-    "env": [
-        {
-            "key": "ENV_VAR_KEY",
-            "description": "Human friendly description of the env var",
-            "value": "Default value of the env var",
-            "required": false 
-        }
-    ],
+	"name": "fuel_prediction",
+	"description": "Fuel Consumption Prediction",
+	"env": [
+		{
+			"key": "NAME",
+			"description": "Dim",
+			"required": false 
+		}
+	]
 }
