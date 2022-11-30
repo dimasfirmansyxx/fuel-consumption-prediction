@@ -1,0 +1,6 @@
+{
+	"name": "fuel_prediction",
+	"description": "Fuel Consumption Prediction",
+	"env": [],
+	"runtime": "python3.9"
+}
