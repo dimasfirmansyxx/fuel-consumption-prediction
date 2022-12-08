@@ -1,9 +1,7 @@
 from flask import Flask, render_template,url_for,request,jsonify
 from flask_cors import CORS, cross_origin
-import joblib
 import os
 import pickle
-import numpy as np
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler
 
