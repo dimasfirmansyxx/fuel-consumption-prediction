@@ -11,6 +11,45 @@ app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+def getFuelConsumption(cylinders, displacement, horsepower, weight, model_year):
+    values = [[cylinders,displacement,horsepower,weight,model_year]]
+    scaler_path = os.path.join(os.path.dirname('models/'),'consumption-scaler.pkl')
+    sc = None
+    with open(scaler_path,'rb') as f:
+        sc=pickle.load(f)
+    values = sc.transform(values)
+    model = load_model(r'models/consumption-model.h5')
+    prediction = model.predict(values)
+    prediction = float(prediction)
+    return prediction
+
+def getCarType(cylinders, displacement, horsepower, weight, model_year, kml):
+    values = [[cylinders,displacement,horsepower,weight,model_year,kml]]
+    scaler_path = os.path.join(os.path.dirname('models/'),'type-scaler.pkl')
+    sc = None
+    with open(scaler_path,'rb') as f:
+        sc=pickle.load(f)
+    values = sc.transform(values)
+    model = load_model(r'models/type-model.h5')
+    prediction = model.predict(values)
+    prediction = int(prediction)
+
+    if (prediction == 1):
+        return 'MPV'
+    elif (prediction == 2): 
+        return 'SUV'
+    elif (prediction == 3):
+        return 'Hatchback'
+    elif (prediction == 4):
+        return 'Sedan'
+    elif (prediction == 5):
+        return 'Minivan'
+    elif (prediction == 6):
+        return 'Wagon'
+    elif (prediction == 7):
+        return 'Pickup'
+
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -23,25 +62,21 @@ def result():
     horsepower = int(request.form['horsepower'])
     weight = int(request.form['weight'])
     model_year = int(request.form['model_year'])
+
+    fuel = getFuelConsumption(cylinders, displacement, horsepower, weight, model_year)
+    carType = getCarType(cylinders, displacement, horsepower, weight, model_year, fuel)
     
-    values = [[cylinders,displacement,horsepower,weight,model_year]]
+    if (fuel > 20):
+        score = 'Excellent'
+    elif (fuel > 11):
+        score = 'Good'
+    else:
+        score = 'Bad'
 
-    scaler_path = os.path.join(os.path.dirname('models/'),'scaler.pkl')
-
-    sc = None
-    with open(scaler_path,'rb') as f:
-        sc=pickle.load(f)
-        
-    values = sc.transform(values)
-
-    model = load_model(r'models/model.h5')
-
-    prediction = model.predict(values)
-    prediction = float(prediction)
-    print(prediction)
-    
     json_dict={
-        'prediction':prediction
+        'consumption': fuel,
+        'consumption_score': score,
+        'type': carType
     }   
     
     return jsonify(json_dict)

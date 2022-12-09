@@ -84,7 +84,10 @@
         api(new FormData(form))
         .then(res => {
           btn.removeAttribute('disabled')
-          showAlert('success', `Prediction: ${parseInt(res.prediction).toFixed(1)} km/l`)
+          showAlert('success', `
+            Fuel Consumption Prediction: <b>${parseInt(res.consumption).toFixed(1)} km/l || ${res.consumption_score}</b> <br> 
+            Car Type Prediction: <b>${res.type}</b>
+          `)
         })
       })
     </script>
