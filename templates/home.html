@@ -55,7 +55,7 @@
       const form = document.getElementById('frmSubmit')
 
       const api = async (data) => {
-        const hit = await fetch('http://127.0.0.1:3298/result', {
+        const hit = await fetch('/result', {
           method: 'POST',
           body: data,
           cors: 'cors'
