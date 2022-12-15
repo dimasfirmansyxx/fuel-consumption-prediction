@@ -25,12 +25,9 @@ def getFuelConsumption(cylinders, displacement, horsepower, weight, model_year):
 
 def getCarType(cylinders, displacement, horsepower, weight, model_year, kml):
     values = [[cylinders,displacement,horsepower,weight,model_year,kml]]
-    scaler_path = os.path.join(os.path.dirname('models/'),'type-scaler.pkl')
-    sc = None
-    with open(scaler_path,'rb') as f:
-        sc=pickle.load(f)
-    values = sc.transform(values)
-    model = load_model(r'models/type-model.h5')
+    with open(os.path.join(os.path.dirname('models/'),'type-model.pkl'), 'rb') as file :
+        model = pickle.load(file)
+
     prediction = model.predict(values)
     prediction = int(prediction)
 
