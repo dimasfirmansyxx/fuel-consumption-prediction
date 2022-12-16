@@ -7,7 +7,8 @@ from sklearn.preprocessing import StandardScaler
 
 sc = StandardScaler()
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='/static')
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
@@ -77,3 +78,6 @@ def result():
     }   
     
     return jsonify(json_dict)
+
+if __name__=='__main__':
+    app.run(debug=True,port=3298)
